@@ -1,7 +1,11 @@
 package model;
 
-public class NodeHeader {
+public interface NodeHeader {
+
+    public NodeType getNodeType();
+
+    public int getHeaderSize();
     
-    private NodeType nodeType;
+    public byte[] getAsArray();
 
 }

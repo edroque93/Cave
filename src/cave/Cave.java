@@ -1,6 +1,6 @@
 package cave;
 
-import model.FileHolder;
+import model.RootNodeHeader;
 
 /**
  * @author Enrique
@@ -8,8 +8,13 @@ import model.FileHolder;
 public class Cave {
 
     public static void main(String[] args) throws Exception {
-        FileHolder test = new FileHolder("D:\\c.avi");
-        test.loadIntoMem();
+        RootNodeHeader root = new RootNodeHeader(256);
+        
+        for (int i = 0; i < root.getAsArray().length; i++) {
+            System.out.print(root.getAsArray()[i] + ",");
+        }
+        
+        System.out.println("");
     }
-    
+
 }
