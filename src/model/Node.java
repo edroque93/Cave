@@ -14,5 +14,7 @@ public interface Node {
     public NodeHeader getNodeHeader();
 
     public void setName(String newName);
+
+    public void setStartAddress(long l);
     
 }

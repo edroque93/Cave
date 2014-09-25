@@ -10,8 +10,8 @@ public class FolderNode implements NodeContainer {
 
     private String nodeName;
     private List<Node> list;
-    private final long startAddress;
-    private final FolderNodeHeader header;
+    private long startAddress;
+    private FolderNodeHeader header;
 
     public FolderNode(String name, long startAddress) {
         this.nodeName = name;
@@ -59,6 +59,11 @@ public class FolderNode implements NodeContainer {
     @Override
     public NodeHeader getNodeHeader() {
         return header;
+    }
+
+    @Override
+    public void setStartAddress(long startAddress) {
+        this.startAddress = startAddress;
     }
 
 }

@@ -12,11 +12,17 @@ public class Cave {
 
     public static void main(String[] args) throws Exception {
         Container c = new Container();
-        c.addFolder("Textos");
-        c.addFolder("Imágenes");
-        
+        c.addFolder("A");
+        c.addFolder("B");
+        c.changeDirectory("A");
+        c.addFolder("AA");
+        c.debug(); // A
+        c.changeDirectory("..");
+        c.changeDirectory("B");
         c.debug();
-        
+        c.changeDirectory("..");
+        c.debug(); // root
+
 //        /*
 //        Example:
 //        

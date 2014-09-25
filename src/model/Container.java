@@ -61,7 +61,20 @@ public class Container {
 
     public void addFolder(String folderName) {
         NodeContainer last = pwd.get(pwd.size() - 1);
-        FolderNode folder = new FolderNode(folderName, last.getEndAddress() + 8 + 1);
+        NodeContainer parent = last;
+        FolderNode folder = new FolderNode(folderName, root.getEndAddress() + 8);
+
+        if (pwd.size() > 1) {
+            parent = pwd.get(pwd.size() - 2);
+        }
+
+        for (Node node : last.getList()) {
+            if (!parent.getName().equals(node.getName())) {
+                node.setStartAddress(node.getStartAddress() + 8);
+                System.out.println(folderName + " -> +8 to " + node.getName() + " which result is " + node.getStartAddress());
+            }
+        }
+
         last.addNode(folder);
     }
 
@@ -96,8 +109,14 @@ public class Container {
     }
 
     public void debug() {
-        for (int i = 0; i < root.getNodeHeader().getAsArray().length; i++) {
-            System.out.print((root.getNodeHeader().getAsArray()[i] & 0xFF) + ",");
+        NodeContainer last = pwd.get(pwd.size() - 1);
+
+        for (int i = 0; i < last.getNodeHeader().getAsArray().length; i++) {
+            System.out.print((last.getNodeHeader().getAsArray()[i] & 0xFF) + ",");
         }
+        System.out.println("");
+//        for (Node node : getNodes()) {
+//            System.out.println(node.getName());
+//        }
     }
 }

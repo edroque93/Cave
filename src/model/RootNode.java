@@ -9,7 +9,7 @@ import java.util.List;
 public class RootNode implements NodeContainer {
 
     private String nodeName = "Root";
-    private final long startAddress = 0;
+    private long startAddress = 0;
     private List<Node> list;
     private NodeHeader header;
 
@@ -56,6 +56,10 @@ public class RootNode implements NodeContainer {
     @Override
     public NodeHeader getNodeHeader() {
         return header;
+    }
+
+    @Override
+    public void setStartAddress(long startAddress) {
     }
 
 }

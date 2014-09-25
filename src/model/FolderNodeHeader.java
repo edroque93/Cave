@@ -59,7 +59,7 @@ public class FolderNodeHeader implements NodeHeader {
 
     @Override
     public NodeType getNodeType() {
-        return NodeType.Root;
+        return NodeType.Folder;
     }
 
     @Override
