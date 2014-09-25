@@ -12,5 +12,7 @@ public interface Node {
     public long getEndAddress();
     
     public NodeHeader getNodeHeader();
+
+    public void setName(String newName);
     
 }

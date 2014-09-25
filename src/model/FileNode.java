@@ -21,6 +21,11 @@ public class FileNode implements Node {
     public String getName() {
         return nodeName;
     }
+    
+    @Override
+    public void setName(String newName) {
+        nodeName = newName;
+    }
 
     @Override
     public long getStartAddress() {
@@ -29,7 +34,7 @@ public class FileNode implements Node {
 
     @Override
     public long getEndAddress() {
-        return endAddress;
+        return endAddress + header.getHeaderSize();
     }
 
     @Override

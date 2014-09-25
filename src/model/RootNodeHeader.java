@@ -1,9 +1,11 @@
 /**
- * TO-DO: rootnode is actually a foldernode in disguise ROOT/FOLDER:
  * ID(1)+HEADERSIZE(4)+NAMELENGTH(4)+NAME(X)+LISTOFSTARTADDRESS(8/ea)+RESERVED(8)
- * FILE: ID(1)+HEADERSIZE(4)+NAME(X)+ENDADDRESS(8)+RESERVED(8)
  */
 package model;
+
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author ThePirateCat
@@ -21,23 +23,27 @@ public class RootNodeHeader implements NodeHeader {
         int size = getHeaderSize();
         byte[] array = new byte[size];
         int pointer = 0;
-        
+
         array[pointer++] = getNodeType().getID();
 
         for (int i = 1; i < 5; i++) {
             array[pointer++] = (byte) (size >>> 8 * (4 - i));
         }
 
-        byte[] arrayName = node.getName().getBytes();
-        
-        for (int i = 1; i < 5; i++) {
-            array[pointer++] = (byte) (arrayName.length >>> 8 * (4 - i));
+        try {
+            byte[] arrayName = node.getName().getBytes("utf-8");
+
+            for (int i = 1; i < 5; i++) {
+                array[pointer++] = (byte) (arrayName.length >>> 8 * (4 - i));
+            }
+
+            for (int i = 0; i < arrayName.length; i++) {
+                array[pointer++] = arrayName[i];
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(RootNodeHeader.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        for (int i = 0; i < arrayName.length; i++) {
-            array[pointer++] = arrayName[i];
-        }
-        
+
         for (Node node : node.getList()) {
             long addr = node.getStartAddress();
 
@@ -57,8 +63,14 @@ public class RootNodeHeader implements NodeHeader {
     }
 
     @Override
-    public int getHeaderSize() { // FIX THIS SHIT
-        return 1 + 4 + node.getList().size() * 8 + 8;
+    public int getHeaderSize() {
+        try {
+            return 1 + 4 + 4 + node.getName().getBytes("utf-8").length + node.getList().size() * 8 + 8;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(RootNodeHeader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
     }
 
 }

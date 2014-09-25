@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author ThePirateCat
  */
-public class FolderNode implements Node {
+public class FolderNode implements NodeContainer {
 
     private String nodeName;
     private List<Node> list;
@@ -16,22 +16,29 @@ public class FolderNode implements Node {
     public FolderNode(String name, long startAddress) {
         this.nodeName = name;
         this.startAddress = startAddress;
-        
+
         list = new ArrayList<>();
         header = new FolderNodeHeader(this);
     }
 
-    public List<Node> getList() {
-        return list;
-    }
-
+    @Override
     public void addNode(Node node) {
         list.add(node);
     }
 
     @Override
+    public List<Node> getList() {
+        return list;
+    }
+
+    @Override
     public String getName() {
         return nodeName;
+    }
+
+    @Override
+    public void setName(String newName) {
+        nodeName = newName;
     }
 
     @Override
@@ -46,12 +53,12 @@ public class FolderNode implements Node {
         for (Node node : list) {
             nodeSize += node.getEndAddress() - node.getStartAddress();
         }
-        return startAddress + nodeSize;
+        return startAddress + nodeSize + header.getHeaderSize();
     }
 
     @Override
     public NodeHeader getNodeHeader() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return header;
     }
 
 }

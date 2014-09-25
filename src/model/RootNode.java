@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * @author ThePirateCat
  */
-public class RootNode implements Node {
+public class RootNode implements NodeContainer {
 
-    private final String nodeName = "Root";
+    private String nodeName = "Root";
     private final long startAddress = 0;
     private List<Node> list;
     private NodeHeader header;
@@ -18,17 +18,24 @@ public class RootNode implements Node {
         header = new RootNodeHeader(this);
     }
 
-    public List<Node> getList() {
-        return list;
-    }
-
+    @Override
     public void addNode(Node node) {
         list.add(node);
     }
 
     @Override
+    public List<Node> getList() {
+        return list;
+    }
+
+    @Override
     public String getName() {
         return nodeName;
+    }
+
+    @Override
+    public void setName(String newName) {
+        nodeName = newName;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class RootNode implements Node {
         for (Node node : list) {
             nodeSize += node.getEndAddress() - node.getStartAddress();
         }
-        return nodeSize;
+        return nodeSize + header.getHeaderSize();
     }
 
     @Override
