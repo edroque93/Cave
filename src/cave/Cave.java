@@ -1,9 +1,7 @@
 package cave;
 
+import java.io.File;
 import model.Container;
-import model.FileNode;
-import model.FolderNode;
-import model.RootNode;
 
 /**
  * @author Enrique
@@ -12,16 +10,18 @@ public class Cave {
 
     public static void main(String[] args) throws Exception {
         Container c = new Container();
-        c.addFolder("A");
-        c.addFolder("B");
-        c.changeDirectory("A");
-        c.addFolder("AA");
-        c.debug(); // A
+        c.addFolder("4chan");
+        c.changeDirectory("4chan");
+        c.addFolder("b");
+        c.changeDirectory("b");
+        File asuka = new File("D:\\asuka.png");
+        c.addFile(asuka.getPath(), asuka.length());
         c.changeDirectory("..");
-        c.changeDirectory("B");
-        c.debug();
         c.changeDirectory("..");
-        c.debug(); // root
+        c.addFolder("Personal");
+        c.printTree();
+        
+        c.build("D:\\out.container");
 
 //        /*
 //        Example:

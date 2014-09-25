@@ -55,25 +55,16 @@ public class Container {
         return names;
     }
 
-    public void addFile(String path) {
-        // Actual path
+    public void addFile(String name, long size) {
+        NodeContainer last = pwd.get(pwd.size() - 1);
+        FileNode file = new FileNode(name, size);
+
+        last.addNode(file);
     }
 
     public void addFolder(String folderName) {
         NodeContainer last = pwd.get(pwd.size() - 1);
-        NodeContainer parent = last;
-        FolderNode folder = new FolderNode(folderName, root.getEndAddress() + 8);
-
-        if (pwd.size() > 1) {
-            parent = pwd.get(pwd.size() - 2);
-        }
-
-        for (Node node : last.getList()) {
-            if (!parent.getName().equals(node.getName())) {
-                node.setStartAddress(node.getStartAddress() + 8);
-                System.out.println(folderName + " -> +8 to " + node.getName() + " which result is " + node.getStartAddress());
-            }
-        }
+        FolderNode folder = new FolderNode(folderName);
 
         last.addNode(folder);
     }
@@ -108,15 +99,33 @@ public class Container {
         return false;
     }
 
-    public void debug() {
-        NodeContainer last = pwd.get(pwd.size() - 1);
+    public void printTree() {
+        System.out.println("[" + root.getName() + "]");
 
-        for (int i = 0; i < last.getNodeHeader().getAsArray().length; i++) {
-            System.out.print((last.getNodeHeader().getAsArray()[i] & 0xFF) + ",");
+        for (Node node : root.getList()) {
+            printNode(node, "--");
         }
-        System.out.println("");
-//        for (Node node : getNodes()) {
-//            System.out.println(node.getName());
-//        }
+    }
+
+    private void printNode(Node node, String depth) {
+        if (node instanceof FolderNode) {
+            System.out.println(depth + "[" + node.getName() + "]");
+            
+            NodeContainer container = (NodeContainer) node;
+            for (Node c : container.getList()) {
+                printNode(c, depth + "--");
+            }
+        } else {
+            System.out.println(depth + node.getName());
+        }
+    }
+
+    public void debug() {
+
+    }
+
+    public void build(String path) {
+        ContainerBuilder builder = new ContainerBuilder(root);
+        builder.build(path);
     }
 }

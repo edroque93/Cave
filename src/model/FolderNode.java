@@ -13,9 +13,8 @@ public class FolderNode implements NodeContainer {
     private long startAddress;
     private FolderNodeHeader header;
 
-    public FolderNode(String name, long startAddress) {
+    public FolderNode(String name) {
         this.nodeName = name;
-        this.startAddress = startAddress;
 
         list = new ArrayList<>();
         header = new FolderNodeHeader(this);

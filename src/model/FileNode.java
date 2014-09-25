@@ -10,11 +10,11 @@ public class FileNode implements Node {
     private long size;
     private NodeHeader header;
 
-    public FileNode(String name, long startAddress, long size) {
+    public FileNode(String name, long size) {
         this.nodeName = name;
-        this.startAddress = startAddress;
-        header = new FileNodeHeader(this);
         this.size = size;
+
+        header = new FileNodeHeader(this);
     }
 
     @Override
