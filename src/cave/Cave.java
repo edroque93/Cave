@@ -1,6 +1,6 @@
 package cave;
 
-import model.RootNodeHeader;
+import model.FileNode;
 
 /**
  * @author Enrique
@@ -8,12 +8,12 @@ import model.RootNodeHeader;
 public class Cave {
 
     public static void main(String[] args) throws Exception {
-        RootNodeHeader root = new RootNodeHeader(256);
-        
-        for (int i = 0; i < root.getAsArray().length; i++) {
-            System.out.print(root.getAsArray()[i] + ",");
+        FileNode file = new FileNode("pepe.txt", 100, 109);
+
+        for (int i = 0; i < file.getNodeHeader().getAsArray().length; i++) {
+            System.out.print((file.getNodeHeader().getAsArray()[i] & 0xFF) + ",");
         }
-        
+
         System.out.println("");
     }
 

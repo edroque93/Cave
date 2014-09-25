@@ -1,7 +1,7 @@
 /**
- * TO-DO: rootnode is actually a foldernode in disguise
- * ROOT/FOLDER: ID(1)+HEADERSIZE(4)+LISTOFSTARTADDRESS(8/ea)+RESERVED(8)
- * FILE:        ID(1)+HEADERSIZE(4)+NAME(X)+RESERVED(8)
+ * TO-DO: rootnode is actually a foldernode in disguise ROOT/FOLDER:
+ * ID(1)+HEADERSIZE(4)+NAMELENGTH(4)+NAME(X)+LISTOFSTARTADDRESS(8/ea)+RESERVED(8)
+ * FILE: ID(1)+HEADERSIZE(4)+NAME(X)+ENDADDRESS(8)+RESERVED(8)
  */
 package model;
 
@@ -10,19 +10,42 @@ package model;
  */
 public class RootNodeHeader implements NodeHeader {
 
-    private final long size;
+    private RootNode node;
 
-    public RootNodeHeader(long size) {
-        this.size = size;
+    public RootNodeHeader(RootNode node) {
+        this.node = node;
     }
 
     @Override
     public byte[] getAsArray() {
-        byte[] array = new byte[getHeaderSize()];
-        array[0] = getNodeType().getID();
+        int size = getHeaderSize();
+        byte[] array = new byte[size];
+        int pointer = 0;
+        
+        array[pointer++] = getNodeType().getID();
 
-        for (int i = 1; i < getHeaderSize(); i++) {
-            array[i] = (byte) (size >>> 8 * (8 - i));
+        for (int i = 1; i < 5; i++) {
+            array[pointer++] = (byte) (size >>> 8 * (4 - i));
+        }
+
+        byte[] arrayName = node.getName().getBytes();
+        
+        for (int i = 1; i < 5; i++) {
+            array[pointer++] = (byte) (arrayName.length >>> 8 * (4 - i));
+        }
+        
+        for (int i = 0; i < arrayName.length; i++) {
+            array[pointer++] = arrayName[i];
+        }
+        
+        for (Node node : node.getList()) {
+            long addr = node.getStartAddress();
+
+            int maxPointer = pointer + 8;
+            int offset = 1;
+            for (; pointer < maxPointer; pointer++) {
+                array[pointer] = (byte) (addr >>> 8 * (8 - offset++));
+            }
         }
 
         return array;
@@ -34,9 +57,8 @@ public class RootNodeHeader implements NodeHeader {
     }
 
     @Override
-    public int getHeaderSize() {
-        // ID + SIZE
-        return 1 + 8;
+    public int getHeaderSize() { // FIX THIS SHIT
+        return 1 + 4 + node.getList().size() * 8 + 8;
     }
 
 }

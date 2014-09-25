@@ -10,4 +10,7 @@ public interface Node {
     public long getStartAddress();
 
     public long getEndAddress();
+    
+    public NodeHeader getNodeHeader();
+    
 }

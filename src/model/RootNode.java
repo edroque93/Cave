@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,8 +9,18 @@ import java.util.List;
 public class RootNode implements Node {
 
     private final String nodeName = "Root";
-    private List<Node> list;
     private final long startAddress = 0;
+    private List<Node> list;
+    private NodeHeader header;
+
+    public RootNode() {
+        list = new ArrayList<>();
+        header = new RootNodeHeader(this);
+    }
+
+    public List<Node> getList() {
+        return list;
+    }
 
     public void addNode(Node node) {
         list.add(node);
@@ -34,5 +45,10 @@ public class RootNode implements Node {
         }
         return nodeSize;
     }
-    
+
+    @Override
+    public NodeHeader getNodeHeader() {
+        return header;
+    }
+
 }

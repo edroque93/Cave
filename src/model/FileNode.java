@@ -8,11 +8,13 @@ public class FileNode implements Node {
     private String nodeName;
     private final long startAddress;
     private final long endAddress;
+    private NodeHeader header;
 
     public FileNode(String name, long startAddress, long endAddress) {
         this.nodeName = name;
         this.startAddress = startAddress;
-        this.endAddress = endAddress;
+        header = new FileNodeHeader(this);
+        this.endAddress = endAddress + header.getHeaderSize();
     }
 
     @Override
@@ -29,5 +31,10 @@ public class FileNode implements Node {
     public long getEndAddress() {
         return endAddress;
     }
-    
+
+    @Override
+    public NodeHeader getNodeHeader() {
+        return header;
+    }
+
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,10 +11,18 @@ public class FolderNode implements Node {
     private String nodeName;
     private List<Node> list;
     private final long startAddress;
+    private final FolderNodeHeader header;
 
     public FolderNode(String name, long startAddress) {
         this.nodeName = name;
         this.startAddress = startAddress;
+        
+        list = new ArrayList<>();
+        header = new FolderNodeHeader(this);
+    }
+
+    public List<Node> getList() {
+        return list;
     }
 
     public void addNode(Node node) {
@@ -39,5 +48,10 @@ public class FolderNode implements Node {
         }
         return startAddress + nodeSize;
     }
-    
+
+    @Override
+    public NodeHeader getNodeHeader() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
